@@ -1,0 +1,50 @@
+{
+  "name": "aloha-payment-solana",
+  "scripts": {
+    "clean": "tsc --build --clean",
+    "build": "tsc --build --verbose",
+    "lint": "tslint -c tslint.json \"./src/**/*.ts\"",
+    "lint-fix": "tslint --fix -c tslint.json \"./src/**/*.ts\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@caporal/core": "^2.0.2",
+    "@elementary-lab/cache": "^1.3.4",
+    "@elementary-lab/events": "^1.3.2",
+    "@elementary-lab/logger": "^1.3.4",
+    "@elementary-lab/standards": "^1.3.2",
+    "axios": "^0.21.0",
+    "dotenv": "^8.2.0",
+    "koa": "^2.13.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-combine-routers": "^4.0.2",
+    "koa-graceful-shutdown": "^1.1.0",
+    "koa-requestid": "^2.1.0",
+    "koa-router": "^9.1.0",
+    "reflect-metadata": "^0.1.13",
+    "retry-axios": "^1.0.1",
+    "sequelize": "^6.6.5",
+    "sequelize-cli": "^6.2.0",
+    "sequelize-typescript": "^2.1.0",
+    "tsconfig-paths": "^3.9.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/async": "^2.0.49",
+    "@types/dotenv": "^8.2.0",
+    "@types/koa": "^2.11.3",
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/koa-requestid": "^2.0.2",
+    "@types/koa-router": "^7.4.1",
+    "@types/node": "^16.10.2",
+    "@types/uuid": "^8.3.1",
+    "@types/validator": "^13.6.3",
+    "ts-node": "^8.10.2",
+    "ts-node-dev": "^1.1.8",
+    "tsc": "^2.0.3",
+    "tslint": "^6.1.3",
+    "typedoc": "^0.19.2",
+    "typescript": "^3.9.7"
+  }
+}
