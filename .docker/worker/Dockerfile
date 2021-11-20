@@ -30,5 +30,5 @@ WORKDIR /app
 
 STOPSIGNAL SIGINT
 
-ENV NODE_OPTIONS="--enable-source-maps"
+ENV NODE_OPTIONS="--enable-source-maps -r tsconfig-paths/register"
 CMD ["node", "src/index.js"]
