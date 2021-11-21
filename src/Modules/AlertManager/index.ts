@@ -6,6 +6,7 @@ import Router from "koa-router";
 import { BaseModule, BaseModuleConfig } from "@Core/BaseModule";
 import {Http} from '@Core/Http';
 import { Context } from "koa";
+import { AlertaAlertsInterface } from "@Modules/AlertManager/Interfaces";
 
 export class AlertManagerModule extends BaseModule<AlertManagerModule>{
     private config: AlertManagerConfigInterface;
@@ -50,6 +51,9 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule>{
         console.log('----------------------------------------')
         console.log(JSON.stringify(ctx.request.body))
         console.log('----------------------------------------')
+
+        let alert: AlertaAlertsInterface = ctx.request.body
+
         ctx.status = 200;
         ctx.body = 'OK';
     }
