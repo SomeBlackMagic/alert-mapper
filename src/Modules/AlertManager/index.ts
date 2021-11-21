@@ -48,7 +48,7 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule>{
     private async webhook(ctx: Context) {
         // Add validation
         console.log('----------------------------------------')
-        console.log(ctx.request.body)
+        console.log(JSON.stringify(ctx.request.body))
         console.log('----------------------------------------')
         ctx.status = 200;
         ctx.body = 'OK';
