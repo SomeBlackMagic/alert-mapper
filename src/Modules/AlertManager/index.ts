@@ -48,7 +48,7 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule>{
 
     private statusMap: Map<string, GlobalStatus> = new Map<string, GlobalStatus>([
         ['firing' ,GlobalStatus.open],
-        ['firing' ,GlobalStatus.closed],
+        ['resolved' ,GlobalStatus.closed],
     ]);
 
 
