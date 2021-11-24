@@ -7,6 +7,7 @@ import { Http } from '@Core/Http';
 import { Probe } from '@Core/Probe';
 import { BaseModule } from '@Core/BaseModule';
 import { AlertManagerModule } from "@Modules/AlertManager";
+import { AlertaModule } from "@Modules/Alerta";
 
 const env = loadEnvFile(process.cwd() + '/.env.local');
 if (env === false) {
@@ -27,7 +28,8 @@ Core.app().registerService('probe', new Probe());
 Core.app().getService<Probe>('probe').init();
 // -------------------external modules-------------------
 let modules = [
-    new AlertManagerModule(configServices.inputs.alertmanager)
+    new AlertManagerModule(configServices.inputs.alertmanager),
+    new AlertaModule(configServices.outputs.alerta)
 ];
 
 

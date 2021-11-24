@@ -73,7 +73,7 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule>{
     public getHttpRoutes(): Router {
         let router = new Router({prefix: '/input/alert-manager'});
         router
-            .all('/webhook', this.webhook.bind(this));
+            .post('/webhook', this.webhook.bind(this));
 
         return router;
     }
