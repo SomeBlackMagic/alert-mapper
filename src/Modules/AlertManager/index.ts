@@ -31,9 +31,9 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule>{
     ]);
 
     private severityMap: Map<string, GlobalSeverityLevels> = new Map<string, GlobalSeverityLevels>([
-        // [,GlobalSeverityLevels.security],
-        // [,GlobalSeverityLevels.critical],
-        // [,GlobalSeverityLevels.major],
+        ['info' ,GlobalSeverityLevels.informational],
+        ['critical', GlobalSeverityLevels.critical],
+        ['warning', GlobalSeverityLevels.warning],
         // [,GlobalSeverityLevels.minor],
         // [,GlobalSeverityLevels.warning],
         // [,GlobalSeverityLevels.informational],
@@ -47,8 +47,8 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule>{
     ]);
 
     private statusMap: Map<string, GlobalStatus> = new Map<string, GlobalStatus>([
-        ['firing' ,GlobalStatus.open],
-        ['resolved' ,GlobalStatus.closed],
+        ['firing', GlobalStatus.open],
+        ['resolved', GlobalStatus.closed],
     ]);
 
 

@@ -77,12 +77,16 @@ export class AlertaModule extends BaseModule<AlertaModule> {
 
     public async applyNewAlertEvent(event: NewAlertEvent) {
         let alert: CreateAlertRequestInterface  = this.mapGlobalAlertToAlerta(event.alert);
+        this.logger.info('Send alert into alerta');
+        console.log(alert);
         let res = await this.alertaRepository.create(alert)
             .catch((error) => {
                 this.logger.error("Can not send alert", error);
                 console.error(error)
             })
+        console.log('------------------Response -----------------');
         console.log(res);
+        console.log('------------------ End -----------------');
 
     }
 
