@@ -1,12 +1,12 @@
-import { AlertInterface } from "src/Interfaces/AlertInterface";
+import { GlobalAlertInterface } from "src/Interfaces/GlobalAlertInterface";
 
 export class NewAlertEvent {
     public static readonly id = 'Global.NewAlertEvent';
 
     private _uuid: string;
-    private _alert: AlertInterface;
+    private _alert: GlobalAlertInterface;
 
-    public constructor(uuid: string, alert: AlertInterface) {
+    public constructor(uuid: string, alert: GlobalAlertInterface) {
         this._uuid = uuid;
         this._alert = alert;
     }
@@ -15,7 +15,7 @@ export class NewAlertEvent {
         return this._uuid;
     }
 
-    public get alert(): AlertInterface {
+    public get alert(): GlobalAlertInterface {
         return this._alert;
     }
 }

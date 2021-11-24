@@ -1,4 +1,3 @@
-import * as path from 'path';
 import { env, envBoolean, envEnum, envNumber } from '@Helpers/functions';
 import {ConsoleTarget} from '@elementary-lab/logger/src/Targets/ConsoleTarget';
 import {SentryTarget} from '@elementary-lab/logger/src/Targets/SentryTarget';
@@ -56,14 +55,17 @@ export class ConfigFactory {
                         enabled: envBoolean('APP_ALERTMANAGER_AUTH_ENABLED', false),
                         user: env('APP_ALERTMANAGER_AUTH_USER', false),
                         pass: env('APP_ALERTMANAGER_AUTH_PASS', false),
+                    },
+                    fields: {
+                        environment: env('APP_ENV')
                     }
                 }
             },
             outputs: {
                 alerta: {
-                    enabled: false,
-                    url: 'http://localhost:8080',
-                    token: 'test-token'
+                    enabled: envBoolean('APP_OUTPUT_ALERTA_ENABLED', false),
+                    url: env('APP_OUTPUT_ALERTA_URL', false),
+                    token: env('APP_OUTPUT_ALERTA_TOKEN', false)
                 }
             }
         };

@@ -1,11 +1,11 @@
-export interface AlertaAlertsInterface {
+export interface AlertmanagerAlertsDataInterface {
     receiver: string
     status: string
     externalURL: string
     version: string
     groupKey: string
     truncatedAlerts: number
-    alerts: AlertInterface[]
+    alerts: AlertmanagerAlertInterface[]
     groupLabels: {
         job: string
     }
@@ -18,7 +18,7 @@ export interface AlertaAlertsInterface {
 
 }
 
-export interface AlertInterface {
+export interface AlertmanagerAlertInterface {
     status: "firing" | "resolved"
     startsAt: Date
     endsAt: Date
@@ -33,3 +33,5 @@ export interface AlertInterface {
         summary: string
     }
 }
+
+

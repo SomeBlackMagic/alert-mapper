@@ -4,15 +4,53 @@ import { LoggerInterface } from "@elementary-lab/standards/src/LoggerInterface";
 import { Core } from "@Core/App";
 import Router from "koa-router";
 import { BaseModule, BaseModuleConfig } from "@Core/BaseModule";
-import {Http} from '@Core/Http';
+import { Http } from '@Core/Http';
 import { Context } from "koa";
-import { AlertaAlertsInterface } from "@Modules/AlertManager/Interfaces";
+import { AlertmanagerAlertInterface, AlertmanagerAlertsDataInterface, } from "@Modules/AlertManager/Interfaces";
+import { NewAlertEvent } from "src/Events/NewAlertEvent";
+import {
+    GlobalAlertEnvironment,
+    GlobalAlertInterface,
+    GlobalSeverityLevels,
+    GlobalStatus
+} from "@Interfaces/GlobalAlertInterface";
+
 
 export class AlertManagerModule extends BaseModule<AlertManagerModule>{
     private config: AlertManagerConfigInterface;
     private bus: EventBusInterface<SimpleEventBus>;
     private logger: LoggerInterface;
     private http: Http;
+
+    private environmentMap: Map<string, GlobalAlertEnvironment>  = new Map<string, GlobalAlertEnvironment>([
+        ['prod' ,GlobalAlertEnvironment.production],
+        ['stage' ,GlobalAlertEnvironment.staging],
+        ['test' ,GlobalAlertEnvironment.testing],
+        ['dev' ,GlobalAlertEnvironment.development],
+        ['' ,GlobalAlertEnvironment.development],
+    ]);
+
+    private severityMap: Map<string, GlobalSeverityLevels> = new Map<string, GlobalSeverityLevels>([
+        // [,GlobalSeverityLevels.security],
+        // [,GlobalSeverityLevels.critical],
+        // [,GlobalSeverityLevels.major],
+        // [,GlobalSeverityLevels.minor],
+        // [,GlobalSeverityLevels.warning],
+        // [,GlobalSeverityLevels.informational],
+        // [,GlobalSeverityLevels.debug],
+        // [,GlobalSeverityLevels.trace],
+        // [,GlobalSeverityLevels.indeterminate],
+        // [,GlobalSeverityLevels.cleared],
+        // [,GlobalSeverityLevels.normal],
+        // [,GlobalSeverityLevels.ok],
+        ['unknown', GlobalSeverityLevels.unknown],
+    ]);
+
+    private statusMap: Map<string, GlobalStatus> = new Map<string, GlobalStatus>([
+        ['firing' ,GlobalStatus.open],
+        ['firing' ,GlobalStatus.closed],
+    ]);
+
 
     public constructor(config: AlertManagerConfigInterface, bus?: EventBusInterface<SimpleEventBus>, logger?: LoggerInterface) {
         super();
@@ -52,10 +90,50 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule>{
         console.log(JSON.stringify(ctx.request.body))
         console.log('----------------------------------------')
 
-        let alert: AlertaAlertsInterface = ctx.request.body
+        await this.processWebHook(ctx.state.id, ctx.request.body);
 
         ctx.status = 200;
         ctx.body = 'OK';
+    }
+
+    public async processWebHook(eventId: string, alert: AlertmanagerAlertsDataInterface) {
+        let globalAlertsList: GlobalAlertInterface[] = [];
+        alert.alerts.map((item) => {
+            globalAlertsList.push(this.mapAlertaAlertsToGlobalAlert(item))
+        })
+
+        globalAlertsList.map((item) => {
+            this.bus.emit(NewAlertEvent.id, new NewAlertEvent(eventId, item))
+        })
+    }
+
+    public mapAlertaAlertsToGlobalAlert(alert: AlertmanagerAlertInterface): GlobalAlertInterface {
+        let severity = 'unknown';
+        if (alert.labels.severity!== null ) {
+            severity = alert.labels.severity
+        }
+
+        let event = ''
+        if (alert.labels.alertname!== null ) {
+            event = alert.labels.alertname
+        }
+
+        return {
+            environment: this.environmentMap.get(this.config.fields.environment),
+            severity: this.severityMap.get(severity),
+            status: this.statusMap.get(alert.status),
+            externalEventId: alert.fingerprint,
+            event: event,
+            summary: alert.annotations.summary,
+            description: alert.annotations.description,
+            labels: alert.labels,
+            raw: {
+                startsAt: alert.startsAt,
+                endsAt: alert.endsAt,
+                generatorURL: alert.generatorURL,
+                runbook_url: alert.annotations.runbook_url
+            }
+        }
     }
 }
 
@@ -65,5 +143,8 @@ export interface AlertManagerConfigInterface extends BaseModuleConfig {
         enabled: boolean
         user: string
         pass: string
+    }
+    fields: {
+        environment: string
     }
 }
