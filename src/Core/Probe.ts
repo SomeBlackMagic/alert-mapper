@@ -1,11 +1,11 @@
-import {EventBusInterface} from '@elementary-lab/standards/src/EventBusInterface';
-import {SimpleEventBus} from '@elementary-lab/events/src/SimpleEventBus';
-import {Http} from '@Core/Http';
-import {Core} from '@Core/App';
+import { EventBusInterface } from '@elementary-lab/standards/src/EventBusInterface';
+import { SimpleEventBus } from '@elementary-lab/events/src/SimpleEventBus';
+import { Http } from '@Core/Http';
+import { Core } from '@Core/App';
 import * as Router from 'koa-router';
-import {Context} from 'koa';
-import {BaseModule} from '@Core/BaseModule';
-import {ProbeLivenessEvents, ProbeLivenessInterface, ProbeLivenessServiceStatus} from '@Core/Probe/ProbeLiveness';
+import { Context } from 'koa';
+import { BaseModule } from '@Core/BaseModule';
+import { ProbeLivenessEvents, ProbeLivenessInterface, ProbeLivenessServiceStatus } from '@Core/Probe/ProbeLiveness';
 
 export class Probe extends BaseModule<Probe> {
 
@@ -37,7 +37,7 @@ export class Probe extends BaseModule<Probe> {
         };
 
         this.bus.on(ProbeReadyEvents.REGISTER_SERVICE, (serviceId: string) => {
-            const newService:ProbeReadyServiceInfo = {
+            const newService: ProbeReadyServiceInfo = {
                 isReady: false,
                 lastUpdated: new Date(),
                 state: [
@@ -47,7 +47,7 @@ export class Probe extends BaseModule<Probe> {
             this.ready.service[serviceId] = newService;
         });
         this.bus.on(ProbeLivenessEvents.REGISTER_SERVICE, (serviceId: string) => {
-            const newService:ProbeReadyServiceInfo = {
+            const newService: ProbeReadyServiceInfo = {
                 isReady: false,
                 lastUpdated: new Date(),
                 state: [
@@ -134,8 +134,6 @@ export class Probe extends BaseModule<Probe> {
             ctx.body = this.liveness;
         }
     }
-
-
 }
 
 declare enum ProbeReadyStateText {
@@ -143,6 +141,7 @@ declare enum ProbeReadyStateText {
     WaitingHealthService = 'Waiting for boot all components',
     WorkNormal = 'All service booted',
 }
+
 interface ProbeReadyInterface {
     isReady: boolean;
     lastUpdated: Date;
