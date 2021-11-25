@@ -52,7 +52,7 @@ let modules = [
 
 
 Core.app().setExitHandler((data: {code:string}) => {
-    Core.info('Pcntl signal received. Closing connection server.', [data.code]);
+    Core.info('PCNTL signal received. Closing connection server.', [data.code]);
     (async () => {
         await Promise.all(modules.map((item: BaseModule<any>) => {return item.stop(); })).catch((error) => {
             Core.error('Can not stop services', error);

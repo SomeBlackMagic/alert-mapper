@@ -65,7 +65,7 @@ export class ConfigFactory {
                 alerta: {
                     enabled: envBoolean('APP_OUTPUT_ALERTA_ENABLED', false),
                     url: env('APP_OUTPUT_ALERTA_URL', false),
-                    token: env('APP_OUTPUT_ALERTA_TOKEN', false)
+                    token: env('APP_OUTPUT_ALERTA_TOKEN', false),
                 }
             }
         };

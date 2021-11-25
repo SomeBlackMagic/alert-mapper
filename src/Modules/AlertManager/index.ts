@@ -16,33 +16,24 @@ import {
 } from "@Interfaces/GlobalAlertInterface";
 
 
-export class AlertManagerModule extends BaseModule<AlertManagerModule>{
+export class AlertManagerModule extends BaseModule<AlertManagerModule> {
     private config: AlertManagerConfigInterface;
     private bus: EventBusInterface<SimpleEventBus>;
     private logger: LoggerInterface;
     private http: Http;
 
-    private environmentMap: Map<string, GlobalAlertEnvironment>  = new Map<string, GlobalAlertEnvironment>([
-        ['prod' ,GlobalAlertEnvironment.production],
-        ['stage' ,GlobalAlertEnvironment.staging],
-        ['test' ,GlobalAlertEnvironment.testing],
-        ['dev' ,GlobalAlertEnvironment.development],
-        ['' ,GlobalAlertEnvironment.development],
+    private environmentMap: Map<string, GlobalAlertEnvironment> = new Map<string, GlobalAlertEnvironment>([
+        ['prod', GlobalAlertEnvironment.production],
+        ['stage', GlobalAlertEnvironment.staging],
+        ['test', GlobalAlertEnvironment.testing],
+        ['dev', GlobalAlertEnvironment.development],
+        ['', GlobalAlertEnvironment.development],
     ]);
 
     private severityMap: Map<string, GlobalSeverityLevels> = new Map<string, GlobalSeverityLevels>([
-        ['info' ,GlobalSeverityLevels.informational],
+        ['info', GlobalSeverityLevels.informational],
         ['critical', GlobalSeverityLevels.critical],
         ['warning', GlobalSeverityLevels.warning],
-        // [,GlobalSeverityLevels.minor],
-        // [,GlobalSeverityLevels.warning],
-        // [,GlobalSeverityLevels.informational],
-        // [,GlobalSeverityLevels.debug],
-        // [,GlobalSeverityLevels.trace],
-        // [,GlobalSeverityLevels.indeterminate],
-        // [,GlobalSeverityLevels.cleared],
-        // [,GlobalSeverityLevels.normal],
-        // [,GlobalSeverityLevels.ok],
         ['unknown', GlobalSeverityLevels.unknown],
     ]);
 
@@ -85,11 +76,8 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule>{
      * @private
      */
     private async webhook(ctx: Context) {
-        // Add validation
-        console.log('----------------------------------------')
-        console.log(JSON.stringify(ctx.request.body))
-        console.log('----------------------------------------')
-
+        // TODO Add validation
+        this.logger.info('Request data:', ctx.request.body, 'Input -> AlertManager')
         await this.processWebHook(ctx.state.id, ctx.request.body);
 
         ctx.status = 200;
@@ -109,16 +97,17 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule>{
 
     public mapAlertaAlertsToGlobalAlert(alert: AlertmanagerAlertInterface): GlobalAlertInterface {
         let severity = 'unknown';
-        if (alert.labels.severity!== null ) {
+        if (alert.labels.severity !== null) {
             severity = alert.labels.severity
         }
 
         let event = ''
-        if (alert.labels.alertname!== null ) {
+        if (alert.labels.alertname !== null) {
             event = alert.labels.alertname
         }
 
         return {
+            from: 'AlertManager',
             environment: this.environmentMap.get(this.config.fields.environment),
             severity: this.severityMap.get(severity),
             status: this.statusMap.get(alert.status),

@@ -41,7 +41,7 @@ describe('e2e -> AlertManager to Alerta', async () => {
 
         // @ts-ignore
         modules[0].processWebHook('', data);
-        await timeout(2000)
+        await timeout(3000)
     });
 
 });

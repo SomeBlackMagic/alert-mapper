@@ -1,4 +1,5 @@
 export interface GlobalAlertInterface {
+    from: string
     externalEventId: string
     summary: string
     description: string

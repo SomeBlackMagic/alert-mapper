@@ -9,10 +9,7 @@ import { loadEnvFile } from '@Helpers/functions';
 import { ConfigFactory } from '@Config/app-config';
 import { Core } from '@Core/App';
 import { BaseModule } from '@Core/BaseModule';
-import { AlertaModule } from "@Modules/Alerta";
 import { ListenCommand } from "src/Commands/ListenCommand";
-import { Http } from "@Core/Http";
-import { Probe } from "@Core/Probe";
 
 const env = loadEnvFile(process.cwd() + '/.env.local');
 if (env === false) {
@@ -25,20 +22,7 @@ const configServices = ConfigFactory.getServices();
 
 Core.bootstrap(configBase, configCore);
 
-let modules = [
-];
-
 (async () => {
-
-    await Promise.all(modules.map((item: BaseModule<any>) => {return item.init(); })).catch((error) => {
-        Core.error('Can not init App:');
-        throw error;
-    });
-
-    await Promise.all(modules.map((item: BaseModule<any>) => {return item.run(); })).catch((error) => {
-        Core.error('Can not run App:');
-        throw error;
-    });
 
     let jobs = [
         new ListenCommand(),

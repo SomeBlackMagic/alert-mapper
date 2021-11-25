@@ -5,69 +5,146 @@
     {
       "status": "firing",
       "labels": {
-        "alertname": "KubePodCrashLooping",
-        "container": "test-app-app",
-        "endpoint": "http",
-        "instance": "10.233.67.248:8080",
-        "job": "kube-state-metrics",
-        "namespace": "test-namespace",
-        "pod": "app-prefix-test-app-consume-async-69dc7df89f-d6dnf",
+        "alertname": "Watchdog",
         "prometheus": "cattle-monitoring-system/rancher-monitoring-prometheus",
-        "service": "rancher-monitoring-kube-state-metrics",
-        "severity": "warning"
+        "severity": "none"
       },
       "annotations": {
-        "description": "Pod test-namespace/app-prefix-test-app-consume-async-69dc7df89f-d6dnf (test-app-app) is restarting 0.55 times / 10 minutes.",
-        "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepodcrashlooping",
-        "summary": "Pod is crash looping."
+        "message": "This is an alert meant to ensure that the entire alerting pipeline is functional.\nThis alert is always firing, therefore it should always be firing in Alertmanager\nand always fire against a receiver. There are integrations with various notification\nmechanisms that send a notification when this alert is not firing. For example the\n\"DeadMansSnitch\" integration in PagerDuty.\n"
       },
-      "startsAt": "2021-11-21T08:56:59.605Z",
+      "startsAt": "2021-11-23T16:03:02.587Z",
       "endsAt": "0001-01-01T00:00:00Z",
-      "generatorURL": "https://rancher.server.com/k8s/clusters/local/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-prometheus:9090/proxy/graph?g0.expr=rate%28kube_pod_container_status_restarts_total%7Bjob%3D%22kube-state-metrics%22%2Cnamespace%3D~%22.%2A%22%7D%5B10m%5D%29+%2A+60+%2A+5+%3E+0&g0.tab=1",
-      "fingerprint": "4915aa5640b54b51"
+      "generatorURL": "https://rancher.localhost/k8s/clusters/local/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-prometheus:9090/proxy/graph?g0.expr=vector%281%29&g0.tab=1",
+      "fingerprint": "7109567b88e9eb6c"
     },
     {
-      "status": "resolved",
+      "status": "firing",
       "labels": {
-        "alertname": "KubeJobFailed",
-        "condition": "true",
-        "container": "kube-state-metrics",
-        "endpoint": "http",
-        "instance": "10.233.67.248:8080",
-        "job": "kube-state-metrics",
-        "job_name": "app-prefix-test-app-job-batch-consume-27291390",
-        "namespace": "test-namespace",
-        "pod": "rancher-monitoring-kube-state-metrics-744b9448f4-685p8",
+        "alertname": "CPUThrottlingHigh",
+        "container": "node-exporter",
+        "namespace": "lens-metrics",
+        "pod": "node-exporter-64sb7",
         "prometheus": "cattle-monitoring-system/rancher-monitoring-prometheus",
-        "service": "rancher-monitoring-kube-state-metrics",
-        "severity": "warning"
+        "severity": "info"
       },
       "annotations": {
-        "description": "Job test-namespace/app-prefix-test-app-job-batch-consume-27291390 failed to complete. Removing failed job after investigation should clear this alert.",
-        "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubejobfailed",
-        "summary": "Job failed to complete."
+        "description": "37.84% throttling of CPU in namespace lens-metrics for container node-exporter in pod node-exporter-64sb7.",
+        "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh",
+        "summary": "Processes experience elevated CPU throttling."
       },
-      "startsAt": "2021-11-21T08:56:59.605Z",
-      "endsAt": "2021-11-21T09:02:59.605Z",
-      "generatorURL": "https://rancher.server.com/k8s/clusters/local/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-prometheus:9090/proxy/graph?g0.expr=kube_job_failed%7Bjob%3D%22kube-state-metrics%22%2Cnamespace%3D~%22.%2A%22%7D+%3E+0&g0.tab=1",
-      "fingerprint": "88b19b7e5266793f"
+      "startsAt": "2021-11-23T16:19:31.978Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://rancher.localhost/k8s/clusters/local/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-prometheus:9090/proxy/graph?g0.expr=sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_throttled_periods_total%7Bcontainer%21%3D%22%22%7D%5B5m%5D%29%29+%2F+sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_periods_total%5B5m%5D%29%29+%3E+%2825+%2F+100%29&g0.t  ab=1",
+      "fingerprint": "47d228f98fee5968"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "CPUThrottlingHigh",
+        "container": "node-exporter",
+        "namespace": "lens-metrics",
+        "pod": "node-exporter-bl5mz",
+        "prometheus": "cattle-monitoring-system/rancher-monitoring-prometheus",
+        "severity": "info"
+      },
+      "annotations": {
+        "description": "33.63% throttling of CPU in namespace lens-metrics for container node-exporter in pod node-exporter-bl5mz.",
+        "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh",
+        "summary": "Processes experience elevated CPU throttling."
+      },
+      "startsAt": "2021-11-25T04:04:31.978Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://rancher.localhost/k8s/clusters/local/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-prometheus:9090/proxy/graph?g0.expr=sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_throttled_periods_total%7Bcontainer%21%3D%22%22%7D%5B5m%5D%29%29+%2F+sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_periods_total%5B5m%5D%29%29+%3E+%2825+%2F+100%29&g0.tab=1",
+      "fingerprint": "87c58ee31360849e"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "CPUThrottlingHigh",
+        "container": "node-exporter",
+        "namespace": "lens-metrics",
+        "pod": "node-exporter-fpss6",
+        "prometheus": "cattle-monitoring-system/rancher-monitoring-prometheus",
+        "severity": "info"
+      },
+      "annotations": {
+        "description": "38.27% throttling of CPU in namespace lens-metrics for container node-exporter in pod node-exporter-fpss6.",
+        "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh",
+        "summary": "Processes experience elevated CPU throttling."
+      },
+      "startsAt": "2021-11-23T16:19:31.978Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://rancher.localhost/k8s/clusters/local/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-prometheus:9090/proxy/graph?g0.expr=sum+by%28container%2C+pod%2C+namespace%29+%28increase%28co  ntainer_cpu_cfs_throttled_periods_total%7Bcontainer%21%3D%22%22%7D%5B5m%5D%29%29+%2F+sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_periods_total%5B5m%5D%29%29+%3E+%2825+%2F+100%29&g0.tab=1",
+      "fingerprint": "509bdf331cb641da"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "CPUThrottlingHigh",
+        "container": "node-exporter",
+        "namespace": "lens-metrics",
+        "pod": "node-exporter-nktlt",
+        "prometheus": "cattle-monitoring-system/rancher-monitoring-prometheus",
+        "severity": "info"
+      },
+      "annotations": {
+        "description": "36.39% throttling of CPU in namespace lens-metrics for container node-exporter in pod node-exporter-nktlt.",
+        "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh",
+        "summary": "Processes experience elevated CPU throttling."
+      },
+      "startsAt": "2021-11-24T22:26:31.978Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://rancher.localhost/k8s/clusters/local/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-prometheus:9090/proxy/graph?g0.expr=sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_throttled_periods_total%7Bcontainer%21%3D%22%22%7D%5B5m%5D%29%29+%2F+sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_periods_total%5B5m%5D%29%29+%3E+%2825+%2F+100%29&g0.tab=1",
+      "fingerprint": "1e0197e55c11fdef"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "CPUThrottlingHigh",
+        "container": "node-exporter",
+        "namespace": "lens-metrics",
+        "pod": "node-exporter-sf2kc",
+        "prometheus": "cattle-monitoring-system/rancher-monitoring-prometheus",
+        "severity": "info"
+      },
+      "annotations": {
+        "description": "36.51% throttling of CPU in namespace lens-metrics for container node-exporter in pod node-exporter-sf2kc.",
+        "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh",
+        "summary": "Processes experience elevated CPU throttling."
+      },
+      "startsAt": "2021-11-23T16:19:31.978Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://rancher.localhost/k8s/clusters/local/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-prometheus:9090/proxy/graph?g0.expr=sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_throttled_periods_total%7Bcontainer%21%3D%22%22%7D%5B5m%5D%29%29+%2F+sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_periods_total%5B5m%5D%29%29+%3E+%2825+%2F+100%29&g0.tab=1",
+      "fingerprint": "54d8649dbd380761"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "CPUThrottlingHigh",
+        "container": "node-exporter",
+        "namespace": "lens-metrics",
+        "pod": "node-exporter-znzk5",
+        "prometheus": "cattle-monitoring-system/rancher-monitoring-prometheus",
+        "severity": "info"
+      },
+      "annotations": {
+        "description": "30.83% throttling of CPU in namespace lens-metrics for container node-exporter in pod node-exporter-znzk5.",
+        "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh",
+        "summary": "Processes experience elevated CPU throttling."
+      },
+      "startsAt": "2021-11-25T03:02:31.978Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://rancher.localhost/k8s/clusters/local/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-prometheus:9090/proxy/graph?g0.expr=sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_throttled_periods_total%7Bcontainer%21%3D%22%22%7D%5B5m%5D%29%29+%2F+sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_periods_total%5B5m%5D%29%29+%3E+%2825+%2F+100%29&g0.tab=1",
+      "fingerprint": "23cac9a7ec3463d2"
     }
   ],
-  "groupLabels": {
-    "job": "kube-state-metrics"
-  },
+  "groupLabels": {},
   "commonLabels": {
-    "endpoint": "http",
-    "instance": "10.233.67.248:8080",
-    "job": "kube-state-metrics",
-    "namespace": "test-namespace",
-    "prometheus": "cattle-monitoring-system/rancher-monitoring-prometheus",
-    "service": "rancher-monitoring-kube-state-metrics",
-    "severity": "warning"
+    "prometheus": "cattle-monitoring-system/rancher-monitoring-prometheus"
   },
   "commonAnnotations": {},
-  "externalURL": "https://rancher.server.com/k8s/clusters/local/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-alertmanager:9093/proxy",
+  "externalURL": "https://rancher.localhost/k8s/clusters/local/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-alertmanager:9093/proxy",
   "version": "4",
-  "groupKey": "{}:{job=\"kube-state-metrics\"}",
+  "groupKey": "{}:{}",
   "truncatedAlerts": 0
 }
