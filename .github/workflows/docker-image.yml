@@ -2,11 +2,10 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - "*"
     tags:
       - "v*"
-  pull_request:
-    branches: [ master ]
 
 env:
   DOCKER_SERVER_HOST: docker.io
@@ -16,12 +15,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-#    steps:
-#    - uses: actions/checkout@v2
-#
-#    - name: Build the Docker base image
-#      run: docker build . --file Dockerfile --tag ${{ env.DOCKER_SERVER_HOST }}:$(date +%s)
 
     steps:
       # Check out code
@@ -44,3 +37,6 @@ jobs:
 
       - name: Build base image
         run: bash .pipelines/app_image.sh
+
+      - name: Push image to registry
+        run: bash .pipelines/push_image.sh

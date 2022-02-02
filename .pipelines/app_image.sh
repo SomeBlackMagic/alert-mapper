@@ -44,7 +44,7 @@ function build_app_image() {
             --build-arg DOCKER_NODE_VERSION=$DOCKER_NODE_VERSION \
             --build-arg DOCKER_IMAGE_VERSION=$DOCKER_IMAGE_VERSION \
     "
-    docker push ${IMAGE}
+    #docker push ${IMAGE}
 }
 
 build_base_image_app "BUILD app_test" \
