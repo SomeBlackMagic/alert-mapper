@@ -5,6 +5,8 @@ import {SimpleEventBus} from '@elementary-lab/events/src/SimpleEventBus';
 import {LoggerConfigInterface} from '@elementary-lab/logger/src/Interface/LoggerConfigInterface';
 import {Http, HttpServerConfigInterface} from '@Core/Http';
 import {ServiceRegistry} from '@Core/ServiceRegistry';
+import { env, loadEnvFile } from "@Helpers/functions";
+import * as fs from "fs";
 
 export class Core {
 
@@ -21,6 +23,18 @@ export class Core {
     }
 
     private registry: ServiceRegistry<any> = null;
+
+    public static loadEnv(): void {
+        let currentEnv = env('APP_ENV');
+        if (!currentEnv !== null) {
+            if (fs.existsSync(process.cwd() + '/.env.' + currentEnv)) {
+                const env = loadEnvFile(process.cwd() + '/.env.' + currentEnv);
+                if (env === false) {
+                    process.exit(1);
+                }
+            }
+        }
+    }
 
     public static bootstrap(info: AppInfo, coreConfig: CoreConfigInterface):void {
         Core.$self = new Core(coreConfig);

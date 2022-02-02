@@ -1,6 +1,6 @@
 'use strict';
 
-import { loadEnvFile } from '@Helpers/functions';
+import { env, loadEnvFile } from '@Helpers/functions';
 import { Core } from '@Core/App';
 import { ConfigFactory } from '@Config/app-config';
 import { Http } from '@Core/Http';
@@ -9,10 +9,8 @@ import { BaseModule } from '@Core/BaseModule';
 import { AlertManagerModule } from "@Modules/AlertManager";
 import { AlertaModule } from "@Modules/Alerta";
 
-const env = loadEnvFile(process.cwd() + '/.env.local');
-if (env === false) {
-    process.exit(1);
-}
+
+Core.loadEnv();
 
 const configBase = ConfigFactory.getBase();
 const configCore = ConfigFactory.getCore();

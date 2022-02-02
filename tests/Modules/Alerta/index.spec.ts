@@ -1,5 +1,4 @@
 import { Core } from "@Core/App";
-import { loadEnvFile } from "@Helpers/functions";
 import { ConfigFactory } from "@Config/app-config";
 import { Http } from "@Core/Http";
 import { NewAlertEvent } from "src/Events/NewAlertEvent";
@@ -9,10 +8,7 @@ import { GlobalAlertEnvironment, GlobalSeverityLevels, GlobalStatus } from "src/
 
 describe('Output -> Alerta', async () => {
     beforeEach(() => {
-        const env = loadEnvFile(process.cwd() + '/.env.test');
-        if (env === false) {
-            process.exit(1);
-        }
+        Core.loadEnv();
 
         const configBase = ConfigFactory.getBase();
         const configCore = ConfigFactory.getCore();
@@ -32,10 +28,10 @@ describe('Output -> Alerta', async () => {
             token: ''
         }
         let globalAlertEvent = new NewAlertEvent('uuid', {
-            from: "any",
             "severity": GlobalSeverityLevels.critical,
             "environment": GlobalAlertEnvironment.production,
             "status": GlobalStatus.open,
+            "from": "any",
             "externalEventId": "4915aa5640b54b51",
             "event": "KubePodCrashLooping",
             "summary": "Pod is crash looping.",
@@ -60,9 +56,7 @@ describe('Output -> Alerta', async () => {
 
         let alerta = new AlertaModule(alertaConfig);
 
-
         await alerta.applyNewAlertEvent(globalAlertEvent);
-
 
         // expect(eventObj).to.deep.include();
     });

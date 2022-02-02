@@ -75,12 +75,15 @@ export class AlertaModule extends BaseModule<AlertaModule> {
     public async applyNewAlertEvent(event: NewAlertEvent) {
         let alert: CreateAlertRequestInterface = this.mapGlobalAlertToAlerta(event.alert);
         this.logger.info('Send alert into alerta', alert, 'Output -> Alerta');
-        console.log(alert);
         let res = await this.alertaRepository.create(alert)
             .catch((error) => {
                 this.logger.error("Can not send alert", error, 'Output -> Alerta');
+
             })
-        this.logger.info("Alert was send to alerta:" + event.alert.externalEventId, res, 'Output -> Alerta');
+        if(typeof res !== 'undefined') {
+            this.logger.info("Alert was send to alerta: " + event.alert.externalEventId, res, 'Output -> Alerta');
+        }
+        return res;
 
     }
 
@@ -89,7 +92,7 @@ export class AlertaModule extends BaseModule<AlertaModule> {
         return {
             environment: this.environmentMap.get(alert.environment),
             event: alert.event,
-            resource: alert.externalEventId,
+            resource: alert.environment + ':' + alert.externalEventId,
             service: [],
             group: alert.from,
             text: alert.summary,

@@ -51,10 +51,10 @@
     enabled "2.0.x"
     kuler "^2.0.0"
 
-"@elementary-lab/alerta@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@elementary-lab/alerta/-/alerta-1.3.0.tgz#3b8c9f292f42a3e2884ebacdd587a646cc5838f2"
-  integrity sha512-3pjwQh8X4kuPjKTXBd1ZrWxc33S4YkBw1VZ6X0kHA7ZD5f7FcXtSmcLdczDeereEleVQFLnSKf+STnhcdE+cWw==
+"@elementary-lab/alerta@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@elementary-lab/alerta/-/alerta-1.3.1.tgz#eca58789fd12cce29c17b79d59907c6e5423e5ef"
+  integrity sha512-aGwxAWQuRpXx09UlHdRETSaNvfy0+MLUp88NEQ0Mu+TZBVeNMJBWxVDIktgGWBQjaJixxUxAqF0j0Fizgf+fZA==
   dependencies:
     "@elementary-lab/standards" "^1.3.3"
     axios "^0.21.2"

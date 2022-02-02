@@ -6,16 +6,14 @@ import { TraceableEventBus } from "tests/Common/TraceableEventBus";
 import { ConfigFactory } from "@Config/app-config";
 import { Http } from "@Core/Http";
 import { AlertmanagerAlertsDataInterface } from "@Modules/AlertManager/Interfaces";
-import { loadEnvFile } from "@Helpers/functions";
 import { AlertaModule } from "@Modules/Alerta";
 import { BaseModule } from "@Core/BaseModule";
 
 describe('e2e -> AlertManager to Alerta', async () => {
     beforeEach(() => {
-        const env = loadEnvFile(process.cwd() + '/.env.test');
-        if (env === false) {
-            process.exit(1);
-        }
+
+        process.env.APP_ENV = 'test'
+        Core.loadEnv();
 
         const configBase = ConfigFactory.getBase();
         const configCore = ConfigFactory.getCore();
