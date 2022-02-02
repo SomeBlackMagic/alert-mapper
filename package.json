@@ -26,9 +26,6 @@
     "koa-router": "^9.1.0",
     "reflect-metadata": "^0.1.13",
     "retry-axios": "^1.0.1",
-    "sequelize": "^6.6.5",
-    "sequelize-cli": "^6.2.0",
-    "sequelize-typescript": "^2.1.0",
     "tsconfig-paths": "^3.9.0",
     "uuid": "^8.3.2"
   },

@@ -25,15 +25,3 @@ down:
 up:
 	docker-compose up -d
 
-db-recreate:
-	make db-reset
-	make db-migrate
-
-db-migrate:
-	docker-compose run --rm app sh -lc './node_modules/.bin/sequelize db:migrate'
-
-db-reset:
-	docker-compose run --rm app sh -lc './node_modules/.bin/sequelize db:migrate:undo:all'
-
-db-seed:
-	docker-compose run --rm app sh -lc './node_modules/.bin/sequelize db:seed:all'

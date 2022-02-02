@@ -10,7 +10,7 @@ export class ConfigFactory {
 
     public static getBase(): AppInfo {
         return {
-            id: env('APP_NAME', 'app'),
+            id: 'AlertMapper',
             version: env('APP_VERSION'),
             environment: env('APP_ENV'),
         };
@@ -49,15 +49,15 @@ export class ConfigFactory {
         return {
             inputs: {
                 alertmanager: {
-                    enabled: true,
-                    instanceUrl: env('APP_ALERTMANAGER_INSTANCE_URL', false),
+                    enabled: envBoolean('APP_INPUT_ALERTMANAGER_ENABLED', false),
+                    instanceUrl: env('APP_INPUT_ALERTMANAGER_INSTANCE_URL', false),
                     auth: {
-                        enabled: envBoolean('APP_ALERTMANAGER_AUTH_ENABLED', false),
-                        user: env('APP_ALERTMANAGER_AUTH_USER', false),
-                        pass: env('APP_ALERTMANAGER_AUTH_PASS', false),
+                        enabled: envBoolean('APP_INPUT_ALERTMANAGER_AUTH_ENABLED', false),
+                        user: env('APP_INPUT_ALERTMANAGER_AUTH_USER', false),
+                        pass: env('APP_INPUT_ALERTMANAGER_AUTH_PASS', false),
                     },
                     fields: {
-                        environment: env('APP_ENV')
+                        environment: env('APP_INPUT_ALERTMANAGER_ENV')
                     }
                 }
             },
