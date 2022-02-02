@@ -30,6 +30,7 @@ describe('Output -> Alerta', async () => {
         let globalAlertEvent = new NewAlertEvent('uuid', {
             "severity": GlobalSeverityLevels.critical,
             "environment": GlobalAlertEnvironment.production,
+            "resource": "any",
             "status": GlobalStatus.open,
             "from": "any",
             "externalEventId": "4915aa5640b54b51",

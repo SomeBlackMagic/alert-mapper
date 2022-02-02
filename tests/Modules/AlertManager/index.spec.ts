@@ -33,7 +33,8 @@ describe('Input -> AlertManager', async () => {
                 pass: 'test'
             },
             fields: {
-                environment: 'test'
+                environment: 'test',
+                resource: 'resource-1'
             }
         }
         let eventBus = new TraceableEventBus(Core.app().bus())
