@@ -3,8 +3,8 @@ import { GlobalAlertInterface } from "src/Interfaces/GlobalAlertInterface";
 export class NewAlertEvent {
     public static readonly id = 'Global.NewAlertEvent';
 
-    private _uuid: string;
-    private _alert: GlobalAlertInterface;
+    private readonly _uuid: string;
+    private readonly _alert: GlobalAlertInterface;
 
     public constructor(uuid: string, alert: GlobalAlertInterface) {
         this._uuid = uuid;

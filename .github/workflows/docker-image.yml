@@ -8,7 +8,7 @@ on:
 
 env:
   DOCKER_SERVER_HOST: docker.io
-  DOCKER_PROJECT_PATH: someblackmagic/alertmanager-to-alerta-bot
+  DOCKER_PROJECT_PATH: someblackmagic/alert-mapper
   DOCKER_NODE_VERSION: 14
 
 jobs:

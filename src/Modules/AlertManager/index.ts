@@ -27,7 +27,6 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule> {
         ['stage', GlobalAlertEnvironment.staging],
         ['test', GlobalAlertEnvironment.testing],
         ['dev', GlobalAlertEnvironment.development],
-        ['', GlobalAlertEnvironment.development],
     ]);
 
     private severityMap: Map<string, GlobalSeverityLevels> = new Map<string, GlobalSeverityLevels>([
@@ -79,7 +78,7 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule> {
         // TODO Add validation
         this.logger.info('Request data:', ctx.request.body, 'Input -> AlertManager')
         await this.processWebHook(ctx.state.id, ctx.request.body);
-
+        // TODO Add check status
         ctx.status = 200;
         ctx.body = 'OK';
     }
