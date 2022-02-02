@@ -107,6 +107,7 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule> {
 
         return {
             from: 'AlertManager',
+            resource: this.parseResource({}), // TODO Add parse request
             environment: this.environmentMap.get(this.config.fields.environment),
             severity: this.severityMap.get(severity),
             status: this.statusMap.get(alert.status),
@@ -123,6 +124,17 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule> {
             }
         }
     }
+
+    private parseResource(requestBody: any): string {
+        if(requestBody.resource !== undefined) {
+            return requestBody.resource;
+        }
+        if(this.config.fields.resource !== null) {
+            return this.config.fields.resource;
+        }
+
+        return 'unknown'
+    }
 }
 
 export interface AlertManagerConfigInterface extends BaseModuleConfig {
@@ -134,5 +146,6 @@ export interface AlertManagerConfigInterface extends BaseModuleConfig {
     }
     fields: {
         environment: string
+        resource: string
     }
 }

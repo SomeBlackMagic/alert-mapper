@@ -57,7 +57,8 @@ export class ConfigFactory {
                         pass: env('APP_INPUT_ALERTMANAGER_AUTH_PASS', false),
                     },
                     fields: {
-                        environment: env('APP_INPUT_ALERTMANAGER_ENV')
+                        environment: env('APP_INPUT_ALERTMANAGER_ENV'),
+                        resource: env('APP_INPUT_ALERTMANAGER_RESOURCE')
                     }
                 }
             },

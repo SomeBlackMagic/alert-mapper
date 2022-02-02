@@ -4,6 +4,7 @@ export interface GlobalAlertInterface {
     summary: string
     description: string
     event: string
+    resource: string
     environment: GlobalAlertEnvironment
     severity: GlobalSeverityLevels
     status: GlobalStatus

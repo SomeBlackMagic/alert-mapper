@@ -92,7 +92,7 @@ export class AlertaModule extends BaseModule<AlertaModule> {
         return {
             environment: this.environmentMap.get(alert.environment),
             event: alert.event,
-            resource: alert.environment + ':' + alert.externalEventId,
+            resource: alert.resource + ':' + alert.externalEventId,
             service: [],
             group: alert.from,
             text: alert.summary,

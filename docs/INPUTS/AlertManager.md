@@ -19,6 +19,7 @@ receivers:
 ```
 Extra vars:
 - APP_INPUT_ALERTMANAGER_ENV - for set environment name in alert(allow prod,stage,test,dev)
+- APP_INPUT_ALERTMANAGER_RESOURCE - any string set global resource name
 
 # TODO
 - Add silent hook to Alertmanager
