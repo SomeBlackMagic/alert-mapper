@@ -57,7 +57,7 @@ export class Probe extends BaseModule<Probe> {
             this.liveness.service[serviceId] = newService;
         });
 
-        return Promise.resolve(this);
+        return Promise.resolve(true);
     }
 
     public run(): Promise<boolean | Probe> {
@@ -65,7 +65,7 @@ export class Probe extends BaseModule<Probe> {
         this.bus.on(ProbeReadyEvents.UPDATE_SERVICE, (event: ProbeReadyServiceStatus) => {
             let service = this.ready.service[event.serviceId];
             if (typeof service === 'undefined') {
-                Core.warn('Not found service in probe block', [event.serviceId]);
+                Core.warn('Not found service in probe block', [event.serviceId], 'Probe');
                 return;
             }
             service.lastUpdated = new Date();
@@ -80,13 +80,16 @@ export class Probe extends BaseModule<Probe> {
                     return;
                 }
             });
+            if (isReady === true) {
+                Core.info('Application id ready to work', '', 'Probe');
+            }
             this.ready.isReady = isReady;
         });
 
         this.bus.on(ProbeLivenessEvents.UPDATE_SERVICE, (event: ProbeLivenessServiceStatus) => {
             let service = this.liveness.service[event.serviceId];
             if (typeof service === 'undefined') {
-                Core.warn('Not found service in probe block', [event.serviceId]);
+                Core.warn('Not found service in probe block', '', 'Probe');
                 return;
             }
             service.lastUpdated = new Date();

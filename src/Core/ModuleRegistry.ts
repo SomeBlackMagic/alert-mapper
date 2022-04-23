@@ -1,5 +1,3 @@
-import {BaseModule} from '@Core/BaseModule';
-
 export class ModuleRegistry<T> {
 
     private registry: T;

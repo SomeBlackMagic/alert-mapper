@@ -1,4 +1,4 @@
-import { Action, ActionParameters } from 'types';
+import { ActionParameters } from 'types';
 
 export abstract class BaseJob<T> {
     abstract getName(): string;

@@ -1,4 +1,4 @@
-import { GlobalAlertInterface } from "src/Interfaces/GlobalAlertInterface";
+import { GlobalAlertInterface } from 'src/Interfaces/GlobalAlertInterface';
 
 export class NewAlertEvent {
     public static readonly id = 'Global.NewAlertEvent';

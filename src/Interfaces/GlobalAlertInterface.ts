@@ -1,19 +1,19 @@
 export interface GlobalAlertInterface {
-    from: string
-    externalEventId: string
-    summary: string
-    description: string
-    event: string
-    resource: string
-    environment: GlobalAlertEnvironment
-    severity: GlobalSeverityLevels
-    status: GlobalStatus
+    from: string;
+    externalEventId: string;
+    summary: string;
+    description: string;
+    event: string;
+    resource: string;
+    environment: GlobalAlertEnvironment;
+    severity: GlobalSeverityLevels;
+    status: GlobalStatus;
     labels?: {
         [key: string]: string;
-    }
-    tags?: string[]
-    startedAt?: Date
-    raw?: object
+    };
+    tags?: string[];
+    startedAt?: Date;
+    raw?: object;
 }
 
 
@@ -25,19 +25,19 @@ export enum GlobalAlertEnvironment {
 }
 
 export enum GlobalSeverityLevels {
-    security = "security",
-    critical = "critical",
-    major = "major",
-    minor = "minor",
-    warning = "warning",
-    informational = "informational",
-    debug = "debug",
-    trace = "trace",
-    indeterminate = "indeterminate",
-    cleared = "cleared",
-    normal = "normal",
-    ok = "ok",
-    unknown = "unknown"
+    security = 'security',
+    critical = 'critical',
+    major = 'major',
+    minor = 'minor',
+    warning = 'warning',
+    informational = 'informational',
+    debug = 'debug',
+    trace = 'trace',
+    indeterminate = 'indeterminate',
+    cleared = 'cleared',
+    normal = 'normal',
+    ok = 'ok',
+    unknown = 'unknown'
 }
 
 export enum GlobalStatus {

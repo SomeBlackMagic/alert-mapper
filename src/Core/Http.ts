@@ -58,7 +58,7 @@ export class Http {
     }
 
     public stop() {
-        this.koa
+        this.koa;
     }
 
 }

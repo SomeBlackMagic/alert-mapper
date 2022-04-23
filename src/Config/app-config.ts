@@ -3,8 +3,8 @@ import {ConsoleTarget} from '@elementary-lab/logger/src/Targets/ConsoleTarget';
 import {SentryTarget} from '@elementary-lab/logger/src/Targets/SentryTarget';
 import {LogLevel} from '@elementary-lab/logger/src/Types';
 import {AppInfo, CoreConfigInterface} from '@Core/App';
-import { AlertManagerConfigInterface } from "@Modules/AlertManager";
-import { AlertaConfigInterface } from "@Modules/Alerta";
+import { AlertManagerConfigInterface } from '@Modules/AlertManager';
+import { AlertaConfigInterface } from '@Modules/Alerta';
 
 export class ConfigFactory {
 
@@ -32,7 +32,7 @@ export class ConfigFactory {
                         dsn: env('APP_SENTRY_DSN', 'https://fake@fake.local/123'),
                         release: ConfigFactory.getBase().version,
                         environment: ConfigFactory.getBase().environment,
-                        levels: [LogLevel.ERROR, LogLevel.WARNING]
+                        levels: [LogLevel.EMERGENCY, LogLevel.ERROR, LogLevel.WARNING]
                     })
                 ]
             },
@@ -79,5 +79,5 @@ interface ServicesConfigInterface {
     };
     outputs: {
         alerta: AlertaConfigInterface
-    }
+    };
 }

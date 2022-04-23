@@ -1,13 +1,14 @@
 'use strict';
 
-import { env, loadEnvFile } from '@Helpers/functions';
 import { Core } from '@Core/App';
 import { ConfigFactory } from '@Config/app-config';
 import { Http } from '@Core/Http';
 import { Probe } from '@Core/Probe';
 import { BaseModule } from '@Core/BaseModule';
-import { AlertManagerModule } from "@Modules/AlertManager";
-import { AlertaModule } from "@Modules/Alerta";
+import { AlertManagerModule } from '@Modules/AlertManager';
+import { AlertaModule } from '@Modules/Alerta';
+import {NewAlertHandler} from './Commands/NewAlertHandler';
+import {TacticianCommandBus} from '@Core/Tactician/CommandBus';
 
 
 Core.loadEnv();
@@ -25,15 +26,27 @@ Core.app().registerService('probe', new Probe());
 
 Core.app().getService<Probe>('probe').init();
 // -------------------external modules-------------------
-let modules = [
+
+let inputs = [
     new AlertManagerModule(configServices.inputs.alertmanager),
+];
+Core.app().registerService('inputs', inputs);
+
+let outputs = [
     new AlertaModule(configServices.outputs.alerta)
 ];
+Core.app().registerService('outputs', outputs);
 
+
+let commandsList = {
+    NewAlertHandler: new NewAlertHandler()
+};
+
+Core.app().registerService('commandBus', new TacticianCommandBus(commandsList));
 
 (async () => {
     Core.info('Init services');
-    await Promise.all(modules.map((item: BaseModule<any>) => {return item.init(); })).catch((error) => {
+    await Promise.all([...inputs, ...outputs].map((item: BaseModule<any>) => {return item.init(); })).catch((error) => {
         Core.error('Can not init App:');
         throw error;
     });
@@ -41,10 +54,11 @@ let modules = [
     await Core.app().getService<Probe>('probe').run();
     await Core.app().getService<Http>('http').start();
     Core.info('Run services');
-    await Promise.all(modules.map((item: BaseModule<any>) => {return item.run(); })).catch((error) => {
+    await Promise.all([...inputs, ...outputs].map((item: BaseModule<any>) => {return item.run(); })).catch((error) => {
         Core.error('Can not start App', error);
         process.exit(1);
     });
+
 })();
 
 
@@ -52,7 +66,7 @@ let modules = [
 Core.app().setExitHandler((data: {code:string}) => {
     Core.info('PCNTL signal received. Closing connection server.', [data.code]);
     (async () => {
-        await Promise.all(modules.map((item: BaseModule<any>) => {return item.stop(); })).catch((error) => {
+        await Promise.all([...inputs, ...outputs].map((item: BaseModule<any>) => {return item.stop(); })).catch((error) => {
             Core.error('Can not stop services', error);
             process.exit(1);
         });

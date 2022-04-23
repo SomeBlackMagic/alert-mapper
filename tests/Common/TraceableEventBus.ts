@@ -1,14 +1,14 @@
-import { EventBusInterface } from "@elementary-lab/standards/src/EventBusInterface";
+import { EventBusInterface } from '@elementary-lab/standards/src/EventBusInterface';
 
 export class TraceableEventBus<T> implements EventBusInterface<T> {
 
     private bus: EventBusInterface<T>;
 
-    private emittedEvents: EventDescription[] = []
-    private listeners: ListenersDescription[] = []
+    private emittedEvents: EventDescription[] = [];
+    private listeners: ListenersDescription[] = [];
 
     public constructor(bus: EventBusInterface<T>) {
-        this.bus = bus
+        this.bus = bus;
     }
 
     public emit(eventName: string, ...args: any[]): boolean {
@@ -49,14 +49,18 @@ export class TraceableEventBus<T> implements EventBusInterface<T> {
         return this.listeners;
     }
 
+    listenerCount(action: string): number {
+        return -1;
+    }
+
 }
 
 export interface EventDescription {
-    eventName: string,
-    args: any[],
+    eventName: string;
+    args: any[];
 }
 
 export interface ListenersDescription {
-    action: string,
-    method: string,
+    action: string;
+    method: string;
 }

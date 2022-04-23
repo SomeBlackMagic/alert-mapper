@@ -8,8 +8,7 @@ import * as caporal from '@caporal/core';
 import { loadEnvFile } from '@Helpers/functions';
 import { ConfigFactory } from '@Config/app-config';
 import { Core } from '@Core/App';
-import { BaseModule } from '@Core/BaseModule';
-import { ListenCommand } from "src/Commands/ListenCommand";
+// import { ListenCommand } from 'src/Commands/ListenCommand';
 
 const env = loadEnvFile(process.cwd() + '/.env.local');
 if (env === false) {
@@ -25,7 +24,7 @@ Core.bootstrap(configBase, configCore);
 (async () => {
 
     let jobs = [
-        new ListenCommand(),
+        // new ListenCommand(),
     ];
 
     jobs.map((item: BaseJob<any>) => {
@@ -41,7 +40,7 @@ Core.bootstrap(configBase, configCore);
     });
 
     let exitCode = await caporal.program.run();
-    if (typeof exitCode === "number") {
+    if (typeof exitCode === 'number') {
         process.exit(exitCode);
     }
     process.exit(0);

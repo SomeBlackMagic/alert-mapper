@@ -51,45 +51,45 @@
     enabled "2.0.x"
     kuler "^2.0.0"
 
-"@elementary-lab/alerta@^1.3.1":
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/@elementary-lab/alerta/-/alerta-1.3.1.tgz#eca58789fd12cce29c17b79d59907c6e5423e5ef"
-  integrity sha512-aGwxAWQuRpXx09UlHdRETSaNvfy0+MLUp88NEQ0Mu+TZBVeNMJBWxVDIktgGWBQjaJixxUxAqF0j0Fizgf+fZA==
+"@elementary-lab/alerta@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@elementary-lab/alerta/-/alerta-1.4.0.tgz#dd1bb3e3a8eb894aac66bc00e78cccb0ab82a038"
+  integrity sha512-IlR2KBxyaNzYeT+YcGEeyGIP6MN+bx14fjEuQaoUZEeIrWuYnouvvUPMU1oB/Bltdw6c8zhg5yzkbsW6RDVJkA==
   dependencies:
-    "@elementary-lab/standards" "^1.3.3"
+    "@elementary-lab/standards" "^1.3.4"
     axios "^0.21.2"
 
-"@elementary-lab/cache@^1.3.4":
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/@elementary-lab/cache/-/cache-1.3.4.tgz#48d1a00452a505ad74634d743b3b0f167a2c76a0"
-  integrity sha512-vJ+4dLWfd6VunamyZtvwnFe7H8g87hwJAAf/GI7ixtpSCQ9rF5Msmd4yWv4Oj/eztFCMGofMlaZeqFIxEEal9g==
+"@elementary-lab/cache@^1.3.5":
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/@elementary-lab/cache/-/cache-1.3.5.tgz#4ccca7b4a721994e4064d8db13b15dfff4b8936d"
+  integrity sha512-52QgUtBuYLcNZrvzEMXSCFttJ1esDIqDa2FAIzY899bgP08iHHvF1N3U88SAAe9pepwWUEteqvskIbF52IhL3w==
   dependencies:
-    "@elementary-lab/standards" "^1.3.3"
+    "@elementary-lab/standards" "^1.3.4"
     "@types/node" "^8.0.28"
     redis "^2.8.0"
 
-"@elementary-lab/events@^1.3.2":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@elementary-lab/events/-/events-1.3.3.tgz#d033dcfce1a9ce3f01b9ec1b7175eb051f99e318"
-  integrity sha512-9vKZsC1kWJKKrSUcC6N5HCS5Tp6x0C782sHZh81wcZEghfzq4Ca0uekg3d6R1ZnvP58whkW/iAn3ZeFqsU9jgA==
+"@elementary-lab/events@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@elementary-lab/events/-/events-1.4.0.tgz#77ff9fb4fbd8b24b37d84e2f86e518715f9e5654"
+  integrity sha512-MulP6FbMvoYTBsijAJouNsZAWcEHvZyCB0lHegqq1ZXKTdB5JOavDcdYe6n1AG6+g3LcusJP0ZIwfGy1AX6TYA==
   dependencies:
-    "@elementary-lab/standards" "^1.3.3"
+    "@elementary-lab/standards" "^1.3.4"
     events "^3.0.0"
 
-"@elementary-lab/logger@^1.3.4":
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/@elementary-lab/logger/-/logger-1.3.5.tgz#2b4617df818e0afd10880045c5a56a0263b4d3c4"
-  integrity sha512-P3lCnTnGeBif0ySMg/sw2JKF/PLzv6q4D/muUysdsqW74ue3OcKA2W3VWd1Say0nydHDVeUrBXa+4TorMSVybg==
+"@elementary-lab/logger@^1.3.7":
+  version "1.3.7"
+  resolved "https://registry.yarnpkg.com/@elementary-lab/logger/-/logger-1.3.7.tgz#29beb84008818a63edf49ec368919b7b773d0a06"
+  integrity sha512-itp7L1hUNuoJEeU3EEAnBFtLqR9qtRRZ0zjiwpe3ycqCq5tHQ+CJSQkaqzLYqPKlmanH0r+S4Tk4THWfQLnAWw==
   dependencies:
-    "@elementary-lab/standards" "^1.3.3"
+    "@elementary-lab/standards" "^1.3.4"
     "@sentry/node" "^5.10.2"
     stacktrace-parser "^0.1.7"
     winston "^3.2.1"
 
-"@elementary-lab/standards@^1.3.2", "@elementary-lab/standards@^1.3.3":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@elementary-lab/standards/-/standards-1.3.3.tgz#751b01a44d125824aba0ad2371129087ee56ddc5"
-  integrity sha512-mF3hlnnunffRxBPwSrKQp/WEB8dyc5sNSfuAc7/VRyupYW0eWiZMbQTx5AZxBhUYql42emqKHW7N7hyGLB/zZw==
+"@elementary-lab/standards@^1.3.4":
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/@elementary-lab/standards/-/standards-1.3.4.tgz#4640b57f38a0dcc1cd71060f18f987c6a473b880"
+  integrity sha512-e4ZNNXdZBYUd6tS9KFOPRHMTV7l7EEI/Ki1+W6ETyd4QjvbI+94EdSFhecvMpgWbo9TZJxEz88ajc5piJGkehA==
 
 "@sentry/core@5.30.0":
   version "5.30.0"
@@ -1443,7 +1443,7 @@ lodash@4.17.15:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
-lodash@^4.17.12, lodash@^4.17.14:
+lodash@^4.17.12, lodash@^4.17.14, lodash@^4.17.5:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -1886,6 +1886,13 @@ signal-exit@^3.0.2:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.6.tgz#24e630c4b0f03fea446a2bd299e62b4a6ca8d0af"
   integrity sha512-sDl4qMFpijcGw22U5w63KmD3cZJfBuFlVNbVMKje2keoKML7X2UzWbc4XrmEbDwg0NXJc3yv4/ox7b+JWb57kQ==
+
+simple-command-bus@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/simple-command-bus/-/simple-command-bus-1.0.7.tgz#569d7a10ee0a0b9e283cbf0b79c2325df66b9fb0"
+  integrity sha512-bkbV0VRABqG7wLixMlMFM3j5cKSH7MnQXVjdQXyfihj3m8WeRIw9dtG064Aa+2mgeMnUxO5+o9jT6a5aeEA3RQ==
+  dependencies:
+    lodash "^4.17.5"
 
 simple-swizzle@^0.2.2:
   version "0.2.2"
