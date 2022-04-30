@@ -3,7 +3,6 @@ import { EventBusInterface } from '@elementary-lab/standards/src/EventBusInterfa
 import { SimpleEventBus } from '@elementary-lab/events/src/SimpleEventBus';
 import { LoggerInterface } from '@elementary-lab/standards/src/LoggerInterface';
 import { Core } from '@Core/App';
-import { NewAlertEvent } from 'src/Events/NewAlertEvent';
 import { AlertaAlertsRepository } from '@elementary-lab/alerta/src/Repository/AlertaAlertsRepository';
 import {
     AlertStatus,
@@ -17,13 +16,17 @@ import {
 } from 'src/Interfaces/GlobalAlertInterface';
 import {ProbeReadyEvents, ProbeReadyServiceStatus} from '@Core/Probe';
 import {ProbeLivenessEvents, ProbeLivenessServiceStatus} from '@Core/Probe/ProbeLiveness';
+import client from 'prom-client';
+import {HttpEvents} from '@Core/Http';
 
 export class AlertaModule extends BaseModule<AlertaModule> {
     private config: AlertaConfigInterface;
-    private bus: EventBusInterface<SimpleEventBus>;
+    private eventBus: EventBusInterface<SimpleEventBus>;
     private logger: LoggerInterface;
     private alertaRepository: AlertaAlertsRepository;
     private serviceReady: boolean = false;
+
+    private metrics: Map<string, client.Gauge<string>> = new Map<string, client.Gauge<string>>([]);
 
     private environmentMap: Map<GlobalAlertEnvironment, AlertaEnvironment> = new Map<GlobalAlertEnvironment, AlertaEnvironment>([
         [GlobalAlertEnvironment.production, AlertaEnvironment.production],
@@ -55,17 +58,18 @@ export class AlertaModule extends BaseModule<AlertaModule> {
         [GlobalStatus.assign, AlertStatus.assign],
     ]);
 
-    public constructor(config: AlertaConfigInterface, alertaRepository?: AlertaAlertsRepository, bus?: EventBusInterface<SimpleEventBus>, logger?: LoggerInterface) {
+    public constructor(config: AlertaConfigInterface, alertaRepository?: AlertaAlertsRepository, eventBus?: EventBusInterface<SimpleEventBus>, logger?: LoggerInterface) {
         super();
         this.config = config;
         this.alertaRepository = alertaRepository ?? new AlertaAlertsRepository(this.config.url, this.config.token);
-        this.bus = bus ?? Core.app().bus();
+        this.eventBus = eventBus ?? Core.app().bus();
         this.logger = logger ?? Core.app().logger();
     }
 
     public async init(): Promise<AlertaModule> {
-        this.bus.emit(ProbeReadyEvents.REGISTER_SERVICE, 'AlertaModule');
-        this.bus.emit(ProbeLivenessEvents.REGISTER_SERVICE, 'AlertaModule');
+        this.eventBus.emit(ProbeReadyEvents.REGISTER_SERVICE, 'AlertaModule');
+        this.eventBus.emit(ProbeLivenessEvents.REGISTER_SERVICE, 'AlertaModule');
+        this.registerMetrics();
         return Promise.resolve(this);
 
     }
@@ -80,7 +84,7 @@ export class AlertaModule extends BaseModule<AlertaModule> {
                             isReady: true,
                             state: 'ready to process events'
                         };
-                        this.bus.emit(ProbeLivenessEvents.UPDATE_SERVICE, livenessProbe);
+                        this.eventBus.emit(ProbeLivenessEvents.UPDATE_SERVICE, livenessProbe);
                         this.serviceReady = true;
                     }
                 })
@@ -91,7 +95,7 @@ export class AlertaModule extends BaseModule<AlertaModule> {
                             isReady: false,
                             state: 'ping is fail'
                         };
-                        this.bus.emit(ProbeLivenessEvents.UPDATE_SERVICE, livenessProbe);
+                        this.eventBus.emit(ProbeLivenessEvents.UPDATE_SERVICE, livenessProbe);
                         this.serviceReady = false;
                     }
                 });
@@ -104,39 +108,51 @@ export class AlertaModule extends BaseModule<AlertaModule> {
                         isReady: true,
                         state: 'Ready to process events'
                     };
-                    this.bus.emit(ProbeReadyEvents.UPDATE_SERVICE, readyProbeDone);
+                    this.eventBus.emit(ProbeReadyEvents.UPDATE_SERVICE, readyProbeDone);
                     let livenessProbe: ProbeLivenessServiceStatus = {
                         serviceId: 'AlertaModule',
                         isReady: true,
                         state: 'ready to process events'
                     };
-                    this.bus.emit(ProbeLivenessEvents.UPDATE_SERVICE, livenessProbe);
+                    this.eventBus.emit(ProbeLivenessEvents.UPDATE_SERVICE, livenessProbe);
                     this.serviceReady = true;
                     resolve(this);
                 })
-                .catch(() => {
-                    this.logger.error('Alerta service not available', {}, 'Output -> Alerta');
+                .catch((err) => {
+                    this.logger.error('Alerta service not available', err, 'Output -> Alerta');
                     reject(new Error('Alerta service not available'));
                 });
         });
     }
 
+    private registerMetrics(): void {
+        this.metrics.set('output_processed', new client.Gauge({
+            name: 'output_processed',
+            help: 'Count processed',
+            labelNames: ['driver', 'status'],
+        }));
+
+        this.metrics.forEach((value) => {
+            this.eventBus.emit(HttpEvents.REGISTER_METRIC, value);
+        });
+    }
 
     public async applyNewAlertEvent(event: GlobalAlertInterface): Promise<boolean> {
         let alert: CreateAlertRequestInterface = this.mapGlobalAlertToAlerta(event);
         this.logger.info('Send alert into alerta', alert, 'Output -> Alerta');
-        let r =  await this.alertaRepository.create(alert)
+        this.metrics.get('output_processed').inc({driver: 'alerta', status: 'request'});
+        return await this.alertaRepository.create(alert)
             .then((result) => {
                 this.logger.info('Alert was send to alerta: ' + event.externalEventId, result, 'Output -> Alerta');
+                this.metrics.get('output_processed').inc({driver: 'alerta', status: 'success'});
                 return true;
             })
             .catch((error) => {
                 Core.error('Can not send alert', [event.externalEventId, error], 'Output -> Alerta');
+                this.metrics.get('output_processed').inc({driver: 'alerta', status: 'fail'});
                 return false;
 
             });
-        console.log(r);
-        return r;
     }
 
     private mapGlobalAlertToAlerta(alert: GlobalAlertInterface): CreateAlertRequestInterface {

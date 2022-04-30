@@ -39,7 +39,12 @@ export class ConfigFactory {
             http: {
                 host: '*',
                 port: 3000,
-                timeout: 300
+                timeout: 300,
+                metrics: {
+                    enabled: true,
+                    collectDefaultMetrics: false,
+                    prefix: ''
+                }
             }
         };
     }

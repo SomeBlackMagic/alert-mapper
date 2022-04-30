@@ -59,7 +59,7 @@ export function loadEnvFile(path: string): boolean | DotenvParseOutput {
     try {
         fs.accessSync(path, fs.constants.R_OK);
         console.log('Load env vars from file: ' + path);
-        const dotEnv = config({path: path});
+        const dotEnv = config({path: path, override: true, debug: process.env.DEBUG === '*'});
 
         if (dotEnv.error !== undefined) {
             console.log('Can not parse .env file in ');

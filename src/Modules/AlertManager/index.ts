@@ -1,10 +1,10 @@
-import { LoggerInterface } from '@elementary-lab/standards/src/LoggerInterface';
-import { Core } from '@Core/App';
+import {LoggerInterface} from '@elementary-lab/standards/src/LoggerInterface';
+import {Core} from '@Core/App';
 import Router from 'koa-router';
-import { BaseModule, BaseModuleConfig } from '@Core/BaseModule';
-import { Http } from '@Core/Http';
-import { Context } from 'koa';
-import { AlertmanagerAlertInterface, AlertmanagerAlertsDataInterface, } from '@Modules/AlertManager/Interfaces';
+import {BaseModule, BaseModuleConfig} from '@Core/BaseModule';
+import {Http, HttpEvents} from '@Core/Http';
+import {Context} from 'koa';
+import {AlertmanagerAlertInterface, AlertmanagerAlertsDataInterface} from '@Modules/AlertManager/Interfaces';
 
 import {
     GlobalAlertEnvironment,
@@ -14,13 +14,18 @@ import {
 } from '@Interfaces/GlobalAlertInterface';
 import {TacticianCommandBus} from '@Core/Tactician/CommandBus';
 import {NewAlertCommand} from '../../Commands/NewAlertCommand';
+import {EventBusInterface} from '@elementary-lab/standards/src/EventBusInterface';
+import client from 'prom-client';
 
 
 export class AlertManagerModule extends BaseModule<AlertManagerModule> {
     private config: AlertManagerConfigInterface;
-    private bus: TacticianCommandBus;
+    private eventBus: EventBusInterface<any>;
+    private commandBus: TacticianCommandBus;
     private logger: LoggerInterface;
     private http: Http;
+
+    private metrics: Map<string, any> = new Map<string, any>([]);
 
     private environmentMap: Map<string, GlobalAlertEnvironment> = new Map<string, GlobalAlertEnvironment>([
         ['prod', GlobalAlertEnvironment.production],
@@ -42,17 +47,22 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule> {
     ]);
 
 
-    public constructor(config: AlertManagerConfigInterface, bus?: TacticianCommandBus, logger?: LoggerInterface) {
+    public constructor(
+        config: AlertManagerConfigInterface,
+        eventBus?: EventBusInterface<any>,
+        logger?: LoggerInterface
+    ) {
         super();
         this.config = config;
-        this.bus = bus;
         this.logger = logger ?? Core.app().logger();
         this.http = Core.app().getService<Http>('http');
+        this.eventBus = eventBus ?? Core.app().bus();
     }
 
     public init(): Promise<AlertManagerModule> {
-        this.http.registerRoutes(this.getHttpRoutes());
-        this.bus = Core.app().getService<TacticianCommandBus>('commandBus');
+        this.registerMetrics();
+        this.registerRoutes();
+        this.commandBus = Core.app().getService<TacticianCommandBus>('commandBus');
         return Promise.resolve(this);
     }
 
@@ -61,13 +71,26 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule> {
         return Promise.resolve(this);
     }
 
-    public getHttpRoutes(): Router {
+    private registerRoutes(): void {
         let router = new Router({prefix: '/input/alert-manager'});
         router
             .post('/webhook', this.webhook.bind(this));
 
-        return router;
+        this.http.registerRoutes(router);
     }
+
+    private registerMetrics() {
+        this.metrics.set('input_processed', new client.Gauge({
+            name: 'input_processed',
+            help: 'Count processed',
+            labelNames: ['driver', 'status'],
+        }));
+
+        this.metrics.forEach((value) => {
+            this.eventBus.emit(HttpEvents.REGISTER_METRIC, value);
+        });
+    }
+
 
     /**
      *
@@ -77,17 +100,30 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule> {
      */
     private async webhook(ctx: Context) {
         // TODO Add validation
+        this.metrics.get('input_processed').inc({driver: 'AlertManager', status: 'request'});
         this.logger.info('Request data:', ctx.request.body, 'Input -> AlertManager');
-        let result = await this.processWebHook(ctx.state.id, ctx.request.body);
-        if (result.length > 0) {
+        try {
+            let result = await this.processWebHook(ctx.state.id, ctx.request.body);
+            if (result.length > 0) {
+                this.metrics.get('input_processed').inc({driver: 'AlertManager', status: 'failed'});
+                ctx.status = 500;
+                ctx.body = {
+                    msg: 'Can not process some items',
+                    data: result
+                };
+            } else {
+                this.metrics.get('input_processed').inc({driver: 'AlertManager', status: 'success'});
+                ctx.status = 200;
+                ctx.body = 'OK';
+            }
+        } catch (e) {
+            this.metrics.get('input_processed').inc({driver: 'AlertManager', status: 'failed'});
             ctx.status = 500;
             ctx.body = {
-                msg: 'Can not process some items',
-                data: result
+                msg: 'Can not parse body',
+                data: e.stack
             };
-        } else {
-            ctx.status = 200;
-            ctx.body = 'OK';
+            this.logger.error('Can not parse body', e, 'Input -> AlertManager');
         }
         // TODO Add check status
 
@@ -103,7 +139,7 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule> {
         let f = globalAlertsList.map(async (item) => {
             return {
                 externalEventId: item.externalEventId,
-                status: await this.bus.handle<Promise<any>>(new NewAlertCommand(item.externalEventId, item))
+                status: await this.commandBus.handle<Promise<any>>(new NewAlertCommand(item.externalEventId, item))
             };
         });
         let results = await Promise.all(f);
@@ -112,7 +148,7 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule> {
                 failedProcessing.push(item.externalEventId);
             }
         });
-        return failedProcessing
+        return failedProcessing;
     }
 
     public mapAlertaAlertsToGlobalAlert(alert: AlertmanagerAlertInterface): GlobalAlertInterface {
