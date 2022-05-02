@@ -69,7 +69,9 @@ export class Http {
                 ctx.headers['content-type'] = this.metricRegistry.contentType;
                 ctx.body = await this.metricRegistry.metrics();
             } catch (err) {
+                Core.error('Grab metric failed', err, 'ApiServer');
                 ctx.status = 500;
+                ctx.set('Connection', 'close');
                 ctx.body = err;
             }
 
@@ -112,7 +114,6 @@ export class Http {
 
 export class HttpEvents {
     public static readonly REGISTER_METRIC = 'Core.Http.REGISTER_METRIC';
-    public static readonly UPDATE_METRIC = 'Core.Http.UPDATE_METRIC';
 }
 
 export interface HttpServerConfigInterface {
