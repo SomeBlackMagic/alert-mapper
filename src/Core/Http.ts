@@ -65,8 +65,14 @@ export class Http {
         });
         let router = require('koa-router')();
         let routes = router.get('/metrics', async (ctx: Context) => {
-            ctx.headers['content-type'] = this.metricRegistry.contentType;
-            ctx.body = await this.metricRegistry.metrics();
+            try {
+                ctx.headers['content-type'] = this.metricRegistry.contentType;
+                ctx.body = await this.metricRegistry.metrics();
+            } catch (err) {
+                ctx.status = 500;
+                ctx.body = err;
+            }
+
         });
         this.registerRoutes(routes);
     }
