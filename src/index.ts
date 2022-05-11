@@ -9,6 +9,7 @@ import { AlertManagerModule } from '@Modules/AlertManager';
 import { AlertaModule } from '@Modules/Alerta';
 import {NewAlertHandler} from './Commands/NewAlertHandler';
 import {TacticianCommandBus} from '@Core/Tactician/CommandBus';
+import {TelegramModule} from '@Modules/Telegram';
 
 
 Core.loadEnv();
@@ -33,7 +34,8 @@ let inputs = [
 Core.app().registerService('inputs', inputs);
 
 let outputs = [
-    new AlertaModule(configServices.outputs.alerta)
+    new AlertaModule(configServices.outputs.alerta),
+    new TelegramModule(configServices.outputs.telegram)
 ];
 Core.app().registerService('outputs', outputs);
 

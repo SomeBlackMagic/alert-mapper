@@ -5,6 +5,7 @@ import {LogLevel} from '@elementary-lab/logger/src/Types';
 import {AppInfo, CoreConfigInterface} from '@Core/App';
 import { AlertManagerConfigInterface } from '@Modules/AlertManager';
 import { AlertaConfigInterface } from '@Modules/Alerta';
+import {TelegramConfigInterface} from '@Modules/Telegram';
 
 export class ConfigFactory {
 
@@ -72,6 +73,13 @@ export class ConfigFactory {
                     enabled: envBoolean('APP_OUTPUT_ALERTA_ENABLED', false),
                     url: env('APP_OUTPUT_ALERTA_URL', false),
                     token: env('APP_OUTPUT_ALERTA_TOKEN', false),
+                },
+                telegram: {
+                    enabled: envBoolean('APP_OUTPUT_TELEGRAM_ENABLED', false),
+                    token: env('APP_OUTPUT_TELEGRAM_TOKEN', 'empty'),
+                    allowCalls: envBoolean('APP_OUTPUT_TELEGRAM_ALLOW_CALLS', false),
+                    chatId: env('APP_OUTPUT_TELEGRAM_CHAT_ID', 'empty'),
+                    textMsgTemplatePath: env('APP_OUTPUT_TELEGRAM_TEXT_MSG_TEMPLATE_PATH', 'empty'),
                 }
             }
         };
@@ -84,5 +92,6 @@ interface ServicesConfigInterface {
     };
     outputs: {
         alerta: AlertaConfigInterface
+        telegram: TelegramConfigInterface
     };
 }

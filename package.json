@@ -29,7 +29,8 @@
     "tsconfig-paths": "^3.9.0",
     "uuid": "^8.3.2",
     "simple-command-bus": "^1.0.7",
-    "prom-client": "^14.0.1"
+    "prom-client": "^14.0.1",
+    "telegraf": "^4.8.1"
   },
   "devDependencies": {
     "@types/async": "^2.0.49",
