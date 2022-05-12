@@ -81,7 +81,7 @@ export class Probe extends BaseModule<Probe> {
                 }
             });
             if (isReady === true) {
-                Core.info('Application id ready to work', '', 'Probe');
+                Core.info('Application is ready to work', '', 'Probe');
             }
             this.ready.isReady = isReady;
         });
