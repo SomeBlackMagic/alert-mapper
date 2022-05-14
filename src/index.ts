@@ -35,7 +35,7 @@ Core.app().registerService('inputs', inputs);
 
 let outputs = [
     new AlertaModule(configServices.outputs.alerta),
-    new TelegramModule(configServices.outputs.telegram)
+    // new TelegramModule(configServices.outputs.telegram)
 ];
 Core.app().registerService('outputs', outputs);
 
