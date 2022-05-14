@@ -1,3 +1,5 @@
+[[ ${CI_DEBUG:-} == "true" ]] && set -x
+
 DOCKER_PUSH_TO_REGISTRY=false
 if [ ${GITHUB_REF_TYPE} == "branch" ]; then
   if [ ${GITHUB_REF_NAME} == "master" ] || [ ${GITHUB_REF_NAME} == "main" ]; then

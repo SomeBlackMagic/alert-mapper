@@ -3,7 +3,7 @@ set -e
 set -u
 set -o pipefail
 
-[[ ${DOCKER_DEBUG:-} ]] && set -x
+[[ ${DOCKER_DEBUG:-} == "true" ]] && set -x
 
 if [[ ${1:-} == "bash" ]]; then
   exec "${@}"
