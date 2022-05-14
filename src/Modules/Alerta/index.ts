@@ -76,8 +76,10 @@ export class AlertaModule extends BaseModule<AlertaModule> {
 
     public run(): Promise<AlertaModule> {
         setInterval(() => {
+            this.logger.debug('heartbeat', '', 'AlertaModule');
             this.alertaRepository.ping()
                 .then(() => {
+                    this.logger.debug('heartbeat ok', '', 'AlertaModule');
                     if (this.serviceReady === false) {
                         let livenessProbe: ProbeLivenessServiceStatus = {
                             serviceId: 'AlertaModule',
@@ -89,6 +91,7 @@ export class AlertaModule extends BaseModule<AlertaModule> {
                     }
                 })
                 .catch(() => {
+                    this.logger.debug('heartbeat error', '', 'AlertaModule');
                     if (this.serviceReady === true) {
                         let livenessProbe: ProbeLivenessServiceStatus = {
                             serviceId: 'AlertaModule',

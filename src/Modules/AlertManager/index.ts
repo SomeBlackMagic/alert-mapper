@@ -131,10 +131,12 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule> {
 
     public async processWebHook(eventId: string, alert: AlertmanagerAlertsDataInterface) {
         let globalAlertsList: GlobalAlertInterface[] = [];
+        this.logger.debug('Remaping', alert.alerts.length, 'Input -> AlertManager');
         alert.alerts.map((item) => {
             globalAlertsList.push(this.mapAlertaAlertsToGlobalAlert(item));
         });
 
+        this.logger.debug('Sending to CommandBus', alert.alerts.length, 'Input -> AlertManager');
         let failedProcessing = [];
         let f = globalAlertsList.map(async (item) => {
             return {

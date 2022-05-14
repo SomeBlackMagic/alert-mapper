@@ -1,6 +1,4 @@
 #!/app/node_modules/.bin/ts-node
-// file: hello-world.js (make the file executable using `chmod +x hello.js`)
-
 
 // Caporal provides you with a program instance
 import { Argument, BaseJob } from '@Core/BaseJob';
@@ -10,10 +8,7 @@ import { ConfigFactory } from '@Config/app-config';
 import { Core } from '@Core/App';
 // import { ListenCommand } from 'src/Commands/ListenCommand';
 
-const env = loadEnvFile(process.cwd() + '/.env.local');
-if (env === false) {
-    process.exit(1);
-}
+Core.loadEnv();
 
 const configBase = ConfigFactory.getBase();
 const configCore = ConfigFactory.getCore();
