@@ -1,3 +1,4 @@
+set -eu
 [[ ${CI_DEBUG:-} == "true" ]] && set -x
 
 DOCKER_PUSH_TO_REGISTRY=false

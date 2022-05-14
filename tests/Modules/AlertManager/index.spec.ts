@@ -39,7 +39,7 @@ describe('Input -> AlertManager', async () => {
             }
         };
         let commandBus = new TraceableCommandBus({});
-        let module = new AlertManagerModule(config, commandBus);
+        let module = new AlertManagerModule(config);
 
         await module.processWebHook('', data);
         let events = commandBus.getEmittedCommands();
