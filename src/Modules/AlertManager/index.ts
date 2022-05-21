@@ -103,19 +103,10 @@ export class AlertManagerModule extends BaseModule<AlertManagerModule> {
         this.metrics.get('input_processed').inc({driver: 'AlertManager', status: 'request'});
         this.logger.info('Request data:', ctx.request.body, 'Input -> AlertManager');
         try {
-            let result = await this.processWebHook(ctx.state.id, ctx.request.body);
-            if (result.length > 0) {
-                this.metrics.get('input_processed').inc({driver: 'AlertManager', status: 'failed'});
-                ctx.status = 500;
-                ctx.body = {
-                    msg: 'Can not process some items',
-                    data: result
-                };
-            } else {
-                this.metrics.get('input_processed').inc({driver: 'AlertManager', status: 'success'});
-                ctx.status = 200;
-                ctx.body = 'OK';
-            }
+            await this.processWebHook(ctx.state.id, ctx.request.body);
+            this.metrics.get('input_processed').inc({driver: 'AlertManager', status: 'success'});
+            ctx.status = 200;
+            ctx.body = 'OK';
         } catch (e) {
             this.metrics.get('input_processed').inc({driver: 'AlertManager', status: 'failed'});
             ctx.status = 500;
