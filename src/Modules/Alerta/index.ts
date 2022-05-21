@@ -151,7 +151,7 @@ export class AlertaModule extends BaseModule<AlertaModule> {
                 return true;
             })
             .catch((error) => {
-                Core.error('Can not send alert', [event.externalEventId, error], 'Output -> Alerta');
+                Core.error('Can not send alert: ' + event.externalEventId, {exception: error}, 'Output -> Alerta');
                 this.metrics.get('output_processed').inc({driver: 'alerta', status: 'fail'});
                 return false;
 
