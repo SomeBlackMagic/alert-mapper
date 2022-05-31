@@ -21,7 +21,9 @@ export class ConfigFactory {
     public static getCore(): CoreConfigInterface {
         return {
             log: {
-                flushInterval: 1,
+                flushBySignals: [],
+                flushByCountInterval: 10,
+                flushByTimeInterval: 1000,
                 traceLevel: 3,
                 targets: [
                     new ConsoleTarget({

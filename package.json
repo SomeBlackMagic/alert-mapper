@@ -1,5 +1,4 @@
 {
-  "version": "0.1.0",
   "scripts": {
     "clean": "tsc --build --clean",
     "build": "tsc --build --verbose",
@@ -13,7 +12,7 @@
     "@caporal/core": "^2.0.2",
     "@elementary-lab/cache": "^1.3.5",
     "@elementary-lab/events": "^1.4.0",
-    "@elementary-lab/logger": "^1.3.7",
+    "@elementary-lab/logger": "^2.0.6",
     "@elementary-lab/standards": "^1.3.4",
     "@elementary-lab/alerta": "^1.4.0",
     "axios": "^0.21.0",

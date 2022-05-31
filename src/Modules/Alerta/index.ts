@@ -25,6 +25,7 @@ export class AlertaModule extends BaseModule<AlertaModule> {
     private logger: LoggerInterface;
     private alertaRepository: AlertaAlertsRepository;
     private serviceReady: boolean = false;
+    private pingTimer: NodeJS.Timer;
 
     private metrics: Map<string, client.Gauge<string>> = new Map<string, client.Gauge<string>>([]);
 
@@ -75,7 +76,7 @@ export class AlertaModule extends BaseModule<AlertaModule> {
     }
 
     public run(): Promise<AlertaModule> {
-        setInterval(() => {
+        this.pingTimer = setInterval(() => {
             this.logger.debug('heartbeat', '', 'AlertaModule');
             this.alertaRepository.ping()
                 .then(() => {
@@ -126,6 +127,12 @@ export class AlertaModule extends BaseModule<AlertaModule> {
                     reject(new Error('Alerta service not available'));
                 });
         });
+    }
+
+
+    public stop(): Promise<boolean | AlertaModule> {
+        clearInterval(this.pingTimer);
+        return super.stop();
     }
 
     private registerMetrics(): void {

@@ -73,9 +73,11 @@ export function loadEnvFile(path: string): boolean | DotenvParseOutput {
 
 }
 
-export function processSignalDebug(name: string, stream: ChildProcessWithoutNullStreams) {
-    console.log('Debug process', stream.spawnargs.join(' '));
-    return;
+export function processSignalDebug(name: string, stream: ChildProcessWithoutNullStreams | NodeJS.Process ) {
+    if ('spawnargs' in stream) {
+        console.log('Debug process', stream.spawnargs.join(' '));
+    }
+    // return;
     stream.on('beforeExit', () => {
         console.log(name + ' send => beforeExit');
     });

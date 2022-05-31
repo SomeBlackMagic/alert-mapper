@@ -98,16 +98,12 @@ export class Core {
 
     public exitHandler: Function;
 
-    public handle(signal) {
-        console.log(`Received ${signal}`);
-    }
-
 
     public subscribeOnProcessExit(): void {
 
 
         /*do something when app is closing*/
-        process.on('exit', this.exitHandler.bind(null, {cleanup: true, code:'exit'}));
+        // process.on('exit', this.exitHandler.bind(null, {cleanup: true, code:'exit'}));
 
         /*catches ctrl+c event*/
         process.on('SIGINT', this.exitHandler.bind(null, {exit: true, code:'SIGINT'}));

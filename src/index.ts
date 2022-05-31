@@ -70,10 +70,12 @@ Core.app().setExitHandler((data: {code:string}) => {
     (async () => {
         await Promise.all([...inputs, ...outputs].map((item: BaseModule<any>) => {return item.stop(); })).catch((error) => {
             Core.error('Can not stop services', error);
-            process.exit(1);
+            process.exitCode = 1;
         });
+        await Core.app().getService<Http>('http').stop();
         Core.info('System gracefully stopped');
-        process.exit(0);
+        // @ts-ignore
+        await process.flushLogs();
     })();
 });
 Core.app().subscribeOnProcessExit();

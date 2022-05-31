@@ -1,6 +1,6 @@
 import { ActionParameters } from 'types';
 
-export abstract class BaseJob<T> {
+export abstract class BaseCliCommand<T> {
     abstract getName(): string;
     abstract getDescription(): string;
     abstract getArguments(): Argument[];

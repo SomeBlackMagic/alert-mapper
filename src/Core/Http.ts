@@ -16,7 +16,7 @@ export class Http {
     private http: http.Server;
     private koa: Koa;
     private routers: any[] = [];
-    private shuttingDown: boolean;
+    private shuttingDown: boolean = false;
     private metricRegistry: Registry;
 
     public constructor(config: HttpServerConfigInterface, bus?: EventBusInterface<SimpleEventBus>) {
@@ -108,6 +108,11 @@ export class Http {
         } else {
             this.shuttingDown = true;
         }
+        this.http.close((err) => {
+            if (err) {
+                Core.emergency('Can not stop http server', {exception: err}, 'ApiServer');
+            }
+        });
     }
 }
 
